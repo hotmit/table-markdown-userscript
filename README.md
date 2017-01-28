@@ -12,3 +12,28 @@
 
 ## Limitation
 * If the colspan is not exact, this will create improper table size (sometime ppl use large colspan to fill the unknown column size colspan="100" even when there only 7 columns for instance)    
+
+
+## Example
+![Before turn on the markdown control](/images/table-b4.png)
+![After turn on the markdown control](/images/table-after.png)
+
+##### Markdown Content
+```markdown
+| Character | Byte order             | Size     | AlignmentMD |
+|-----------|------------------------|----------|-------------|
+| @         | native                 | native   | native      |
+| =         | native                 | standard | none        |
+| <         | little-endian          | standard | none        |
+| >         | big-endian             | standard | none        |
+| !         | network (= big-endian) | standard | none        |
+```
+
+##### Markdown Render
+| Character | Byte order             | Size     | AlignmentMD |
+|-----------|------------------------|----------|-------------|
+| @         | native                 | native   | native      |
+| =         | native                 | standard | none        |
+| <         | little-endian          | standard | none        |
+| >         | big-endian             | standard | none        |
+| !         | network (= big-endian) | standard | none        |
