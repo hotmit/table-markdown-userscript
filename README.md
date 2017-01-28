@@ -1,5 +1,5 @@
 # Table to Markdown Copier
-> *Copy any html table on the web and convert them into markdown format.*
+> **Copy any html table on the web and convert them into markdown format.**
 
 ## Usage
 1. Display The Interface
@@ -13,12 +13,21 @@
 ## Limitation
 * If the colspan is not exact, this will create improper table size (sometime ppl use large colspan to fill the unknown column size colspan="100" even when there only 7 columns for instance)    
 
+## Todo
+* [ ] Fix the colspan error
+* [ ] Add ref link above the table
+* [ ] Detect and generate text alignment
+
 
 ## Example
+**Regular table**
 ![Before turn on the markdown control](/images/table-b4.png)
+
+**Table after markdown table control is activated**
 ![After turn on the markdown control](/images/table-after.png)
 
-##### Markdown Content
+
+#### Markdown Content
 ```markdown
 | Character | Byte order             | Size     | AlignmentMD |
 |-----------|------------------------|----------|-------------|
@@ -29,7 +38,7 @@
 | !         | network (= big-endian) | standard | none        |
 ```
 
-##### Markdown Render
+#### Markdown Render
 | Character | Byte order             | Size     | AlignmentMD |
 |-----------|------------------------|----------|-------------|
 | @         | native                 | native   | native      |
