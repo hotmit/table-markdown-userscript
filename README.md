@@ -20,6 +20,7 @@
 
 
 ## Example
+
 **Regular table**
 ![Before turn on the markdown control](/images/table-b4.png)
 
