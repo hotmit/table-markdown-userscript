@@ -10,7 +10,6 @@
 // @require      https://code.jquery.com/jquery-3.1.1.min.js
 // @require 	 https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.16/clipboard.min.js
 // ==/UserScript==
-// @require 	 https://raw.githubusercontent.com/hotmit/public/master/gm-utils.min.js
 
 var _ju = {};
 JU.publish(JU.__JU, false, false);
