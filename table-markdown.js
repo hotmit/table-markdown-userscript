@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Table to Markdown
+// @name         Table to Markdown Copier
 // @namespace    http://mil1fe.info/
 // @version      0.1
 // @description  Convert html table to markdown format
@@ -11,6 +11,7 @@
 // @require 	 https://raw.githubusercontent.com/hotmit/public/master/gm-utils.min.js
 // @require 	 https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.16/clipboard.min.js
 // ==/UserScript==
+
 var _ju = {};
 JU.publish(JU.__JU, false, false);
 delete JU.__JU;
@@ -19,11 +20,17 @@ JU.activate(_ju);
 (function($, Str) {
     'use strict';
 
+    // max cell with in chars count
     var MAX_COL_SIZE = 80;
 
     $(function(){
         var lastThreeKeys = [], combinationLength = 3;
 
+        /**
+         * Insert the "MD" button to all the last cell in the header of
+         * all the tables in the current page.
+         * @private
+         */
         function _displayTableControl(){
             $('table').each(function(i, e){
                 var id = 'btn-copy-md-' + i, $btnMd = $('<button type="button" class="convert-to-markdown btn btn-primary" />'),
@@ -36,6 +43,7 @@ JU.activate(_ju);
                     padding: '0'
                 }).text('MD').attr('id', id);
 
+                // copy markdown content to the clipboard
                 new Clipboard('#' + id, {
                     text: function(trigger) {
                         return _convertTableToMd($btnMd);
@@ -48,6 +56,14 @@ JU.activate(_ju);
             //$('.convert-to-markdown').click(_convertTableToMd);
         }
 
+        /**
+         * Extract the data from the table. Return array of row of data along with
+         * the maximum length for each column.
+         *
+         * @param $table
+         * @returns {{maxLengths: Array, tableData: Array}}
+         * @private
+         */
         function _getData($table){
             var maxLengths = [], tableData = [];
 
@@ -87,11 +103,16 @@ JU.activate(_ju);
             };
         }
 
+        /**
+         * Convert the data from _getData to actual markdown content.
+         *
+         * @param $btn - The "MD" button housed inside the table.
+         * @returns {string} - The markdown table content
+         * @private
+         */
         function _convertTableToMd($btn){
             var md = '', $table = $btn.parents('table'), data = _getData($table), i, k,
                 maxLengths = data.maxLengths;
-
-            console.log(data);
 
             for (i=0; i<data.tableData.length; i++){
                 var row = data.tableData[i], rowMd = '| ', sepMd = '| ';
@@ -115,6 +136,7 @@ JU.activate(_ju);
                 }
             }
 
+            // copied indicator
             $btn.css('background-color', '#6AB714');
             setTimeout(function(){
                 $btn.css('background-color', '#81358c');
@@ -123,7 +145,9 @@ JU.activate(_ju);
             return md;
         }
 
-        // Activate Markdown Converter Interface => Shift, Shift, T (3 key strokes as a sequence, NOT press all together)
+        // Capture shortcut keys
+        // Activate Markdown Converter Interface
+        //      => Shift, Shift, T (3 key strokes as a sequence, NOT press all together)
         $(document).on('keydown', function(e) {
             lastThreeKeys.push(e.which);
             lastThreeKeys = lastThreeKeys.slice(-combinationLength);
@@ -134,9 +158,8 @@ JU.activate(_ju);
             }
         });
 
-        // Uncomment for dev
+        // uncomment for dev
         // _displayTableControl();
 
     }); //end jqReady
-
 })(jQuery.noConflict(true), _ju.Str);
