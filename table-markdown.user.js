@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Table to Markdown Copier
-// @namespace    http://mil1fe.info/
-// @version      0.1
+// @namespace    https://github.com/hotmit/table-markdown-userscript
+// @version      1.0.0
 // @description  Convert html table to markdown format
 // @author       Du Dang
 // @include      http://*/*
