@@ -1,8 +1,10 @@
 // ==UserScript==
 // @name         Table to Markdown Copier
+// @name:vi      Chép bảng HTML qua dạng markdown
 // @namespace    https://github.com/hotmit/table-markdown-userscript
 // @version      1.0.0
 // @description  Convert html table to markdown format
+// @description:vi  Chuyển bảng html (table) qua dạng markdown.
 // @author       Du Dang
 // @include      http://*/*
 // @include      https://*/*
