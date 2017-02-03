@@ -8,14 +8,15 @@
 // @include      https://*/*
 // @grant        none
 // @require      https://code.jquery.com/jquery-3.1.1.min.js
-// @require 	 https://cdn.rawgit.com/hotmit/public/1bcb1929/js/gm-ju-v1.01.0.min.js
 // @require 	 https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.16/clipboard.min.js
 // ==/UserScript==
-(function($, Str) {
+(function($) {
     'use strict';
 
     // max cell with in chars count
     var MAX_COL_SIZE = 80;
+
+    var Str = {};
 
     $(function(){
         var lastThreeKeys = [], combinationLength = 3;
@@ -179,6 +180,7 @@
          * Clean up the text for the cell content. Like remove new line so it doesn't break the table.
          *
          * @param $td
+         * @param trIndex
          * @returns {string|*}
          */
         function getText($td, trIndex) {
@@ -211,4 +213,23 @@
         // displayTableControl();
 
     }); //end jqReady
-})(jQuery.noConflict(true), _ju.Str);
+
+    // region [ Str Lib ]
+    Str.trim = function (s) {
+        return s.replace(/^\s+/, '').replace(/\s+$/, '');
+    };
+
+    Str.padRight = function(s, padStr, totalLength){
+        return s.length >= totalLength  ? s : s + Str.repeat(padStr, (totalLength-s.length)/padStr.length);
+    };
+
+    Str.repeat = function(s, count) {
+        var newS = "", i;
+        for (i=0; i<count; i++) {
+            newS += s;
+        }
+        return newS;
+    };
+    // endregion
+
+})(jQuery.noConflict(true));
