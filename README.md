@@ -7,7 +7,7 @@
 1. Click on the "MD" button to copy the markdown content to your clipboard
 
 ## Features
-* Support th and td (old vs new table markup)
+* Support both th and td (old vs new table markup)
 * Support colspan 
 
 ## Limitation
@@ -15,35 +15,39 @@
 
 ## Todo
 * [ ] Fix the colspan error
-* [ ] Add ref link above the table
+* [x] Add ref link below the table
 * [ ] Detect and generate text alignment
 
 
 ## Example
 
 **Regular table**
+
 ![Before turn on the markdown control](/images/table-b4.png)
 
 **Table after markdown table control is activated**
+
 ![After turn on the markdown control](/images/table-after.png)
 
 
 #### Markdown Content
 ```markdown
-| Character | Byte order             | Size     | AlignmentMD |
+| Character | Byte order             | Size     | Alignment   |
 |-----------|------------------------|----------|-------------|
 | @         | native                 | native   | native      |
 | =         | native                 | standard | none        |
 | <         | little-endian          | standard | none        |
 | >         | big-endian             | standard | none        |
 | !         | network (= big-endian) | standard | none        |
+[Table Source](https://docs.python.org/3/library/struct.html#byte-order-size-and-alignment)
 ```
 
 #### Markdown Render
-| Character | Byte order             | Size     | AlignmentMD |
+| Character | Byte order             | Size     | Alignment   |
 |-----------|------------------------|----------|-------------|
 | @         | native                 | native   | native      |
 | =         | native                 | standard | none        |
 | <         | little-endian          | standard | none        |
 | >         | big-endian             | standard | none        |
 | !         | network (= big-endian) | standard | none        |
+[Table Source](https://docs.python.org/3/library/struct.html#byte-order-size-and-alignment)

@@ -8,14 +8,9 @@
 // @include      https://*/*
 // @grant        none
 // @require      https://code.jquery.com/jquery-3.1.1.min.js
+// @require 	 https://cdn.rawgit.com/hotmit/public/1bcb1929/js/gm-ju-v1.01.0.min.js
 // @require 	 https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.16/clipboard.min.js
 // ==/UserScript==
-
-var _ju = {};
-JU.publish(JU.__JU, false, false);
-delete JU.__JU;
-JU.activate(_ju);
-
 (function($, Str) {
     'use strict';
 
@@ -25,15 +20,18 @@ JU.activate(_ju);
     $(function(){
         var lastThreeKeys = [], combinationLength = 3;
 
+        // region [ Display Control ]
         /**
          * Insert the "MD" button to all the last cell in the header of
          * all the tables in the current page.
          * @private
          */
-        function _displayTableControl(){
+        function displayTableControl(){
             $('table').each(function(i, e){
-                var id = 'btn-copy-md-' + i, $btnMd = $('<button type="button" class="convert-to-markdown btn btn-primary" />'),
-                    $tb = $(e), $lastCell = $tb.find('tr:first').find('td:last, th:last').first();
+                var id = 'btn-copy-md-' + i, $tb = $(e),
+                    $btnMd = $('<button type="button" class="convert-to-markdown btn btn-primary" />'),
+                    $lastCell = $tb.find('tr:first').find('td:last, th:last').first();
+
                 $btnMd.css({
                     height: '20px',
                     width: '30px',
@@ -44,17 +42,19 @@ JU.activate(_ju);
 
                 // copy markdown content to the clipboard
                 new Clipboard('#' + id, {
-                    text: function(trigger) {
-                        return _convertTableToMd($btnMd);
+                    text: function() {
+                        return convertTableToMd($btnMd);
                     }
                 });
 
                 $lastCell.append($btnMd);
             });
 
-            //$('.convert-to-markdown').click(_convertTableToMd);
+            //$('.convert-to-markdown').click(convertTableToMd);
         }
+        // endregion
 
+        // region [ Code ]
         /**
          * Extract the data from the table. Return array of row of data along with
          * the maximum length for each column.
@@ -63,7 +63,7 @@ JU.activate(_ju);
          * @returns {{maxLengths: Array, tableData: Array}}
          * @private
          */
-        function _getData($table){
+        function getData($table){
             var maxLengths = [], tableData = [];
 
             function setMax(index, length){
@@ -74,17 +74,17 @@ JU.activate(_ju);
                 maxLengths[index] = Math.max(maxLengths[index], length);
             }
 
-            $table.find('tr').each(function(i, tr){
+            $table.find('tr').each(function(trIndex, tr){
                 var $tr = $(tr), row = [], offset = 0;
 
                 $tr.find('td, th').each(function(i, td){
-                    var $td = $(td), text = $td.text(), tl = text.length,
+                    var $td = $(td), text = getText($td, trIndex), tl = text.length,
                         index = i + offset, colspan = $td.attr('colspan');
 
                     setMax(index, tl);
                     row.push(text);
 
-                    if (colspan && $.isNumeric(colspan)){
+                    if (colspan && $.isNumeric(colspan) && Number(colspan) > 1){
                         colspan = Number(colspan);
                         offset += colspan - 1;
                         for (var k=0; k<colspan; k++){
@@ -103,14 +103,14 @@ JU.activate(_ju);
         }
 
         /**
-         * Convert the data from _getData to actual markdown content.
+         * Convert the data from getData to actual markdown content.
          *
          * @param $btn - The "MD" button housed inside the table.
          * @returns {string} - The markdown table content
          * @private
          */
-        function _convertTableToMd($btn){
-            var md = '', $table = $btn.parents('table'), data = _getData($table), i, k,
+        function convertTableToMd($btn){
+            var md = '', $table = $btn.parents('table'), data = getData($table), i, k,
                 maxLengths = data.maxLengths;
 
             for (i=0; i<data.tableData.length; i++){
@@ -135,6 +135,8 @@ JU.activate(_ju);
                 }
             }
 
+            md += getReferenceLink($table);
+
             // copied indicator
             $btn.css('background-color', '#6AB714');
             setTimeout(function(){
@@ -144,21 +146,69 @@ JU.activate(_ju);
             return md;
         }
 
-        // Capture shortcut keys
+        /**
+         * Generate markdown link to the table for future reference.
+         *
+         * @param $table
+         * @returns {*}
+         */
+        function getReferenceLink($table) {
+            var refLink, $anchor, refId = $table.attr('id'), href = location.href;
+
+            if(!refId) {
+                $anchor = $table.parents('[id]').first();
+                if ($anchor.length){
+                    refId = $anchor.attr('id');
+                }
+            }
+
+            if (refId) {
+                if (href.indexOf('#') != -1) {
+                    refLink = href.replace(/#.+/, '#' + refId);
+                }
+                else {
+                    refLink = href + '#' + refId;
+                }
+            }
+            // if no id link, then just use the main link as reference
+            refLink = refLink || href;
+            return '[Table Source](' + refLink + ')';
+        }
+
+        /**
+         * Clean up the text for the cell content. Like remove new line so it doesn't break the table.
+         *
+         * @param $td
+         * @returns {string|*}
+         */
+        function getText($td, trIndex) {
+            var text = $td.text();
+            if (trIndex === 0){
+                // remove the MD link from the text
+                text = text.replace(/MD$/, '');
+            }
+            text = text.replace("\n", '');
+            text = text.replace(/\s/g, ' ');
+            return Str.trim(text);
+        }
+        // endregion
+
+        // region [ Capture shortcut keys ]
         // Activate Markdown Converter Interface
         //      => Shift, Shift, T (3 key strokes as a sequence, NOT press all together)
         $(document).on('keydown', function(e) {
             lastThreeKeys.push(e.which);
             lastThreeKeys = lastThreeKeys.slice(-combinationLength);
-            if (("" + lastThreeKeys) == '16,16,84') {
-                _displayTableControl();
+            if (lastThreeKeys.toString() == '16,16,84') {
+                displayTableControl();
                 e.preventDefault();
                 return false;
             }
         });
+        // endregion
 
         // uncomment for dev
-        // _displayTableControl();
+        // displayTableControl();
 
     }); //end jqReady
 })(jQuery.noConflict(true), _ju.Str);
