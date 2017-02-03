@@ -4,6 +4,8 @@
 ## Greasyfork Link
 [[ Greasyfork ]](https://greasyfork.org/en/scripts/26890-table-to-markdown-copier)
 
+[[ Install ]](https://greasyfork.org/scripts/26890-table-to-markdown-copier/code/Table%20to%20Markdown%20Copier.user.js)
+
 ## Usage
 1. Display The Interface
 	* Press Shift, Shift, T (press in sequence, not together as combination)
