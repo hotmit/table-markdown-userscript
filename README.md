@@ -2,7 +2,7 @@
 > **Copy any html table on the web and convert them into markdown format.**
 
 ## Greasyfork Link
-[Greasyfork](https://greasyfork.org/en/scripts/26890-table-to-markdown-copier)
+[[ Greasyfork ]](https://greasyfork.org/en/scripts/26890-table-to-markdown-copier)
 
 ## Usage
 1. Display The Interface
