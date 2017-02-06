@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Table to Markdown Copier
 // @namespace    https://github.com/hotmit/table-markdown-userscript
-// @version      1.0.0
+// @version      1.0.1
 // @description  Convert html table to markdown format
 // @author       Du Dang
 // @include      http://*/*
@@ -111,7 +111,7 @@
          * @private
          */
         function convertTableToMd($btn){
-            var md = '', $table = $btn.parents('table'), data = getData($table), i, k,
+            var md = '', $table = $btn.parents('table').first(), data = getData($table), i, k,
                 maxLengths = data.maxLengths;
 
             for (i=0; i<data.tableData.length; i++){

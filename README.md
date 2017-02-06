@@ -18,6 +18,10 @@
 * [x] Add ref link below the table
 * [ ] Detect and generate text alignment
 
+## Change Logs
+* v1.0.1 
+	* Fixed where the copy button pickup more than one tables 
+
 
 ## Example
 
