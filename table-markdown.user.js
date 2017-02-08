@@ -11,6 +11,7 @@
 // @grant        none
 // @require      https://code.jquery.com/jquery-3.1.1.min.js
 // @require 	 https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.16/clipboard.min.js
+// @license      MIT
 // ==/UserScript==
 (function($) {
     'use strict';
